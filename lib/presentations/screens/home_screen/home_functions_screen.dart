@@ -13,23 +13,36 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Ecommerce"),
+        title: Text("My Ecommerce"),
         actions: [
-          IconButton(onPressed: null, icon: Icon(Icons.search)),
-          IconButton(onPressed: null, icon: Icon(Icons.shopping_cart)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_on)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.message)),
         ],
       ),
       body: GridView(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 5,
         ),
         padding: EdgeInsets.all(2),
         children: List.generate(
-          8,
-          (index) =>
-              const Padding(padding: EdgeInsets.all(8), child: FlutterLogo()),
+          16,
+          (index) => const Padding(
+            padding: EdgeInsets.all(15),
+            child: Card(
+              color: Colors.blue,
+              elevation: 7,
+              child: Center(
+                child: Text(
+                  'Product images',
+                  style: TextStyle(
+                    fontFamily: 'Arial rounded MT Bold',
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
 
@@ -43,19 +56,15 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
         indicatorColor: Theme.of(context).colorScheme.inversePrimary,
         //selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          navigation_destination_select(
+          navigationHome(
             icon: Icons.home,
             selectedIcon: Icons.home,
+            text: 'Home',
           ),
           navigation_distination(icon: Icons.account_box, text: 'Account'),
-          navigation_distination(
-            icon: Icons.notifications_active,
-            text: 'Notifications',
-          ),
-          NavigationDestination(
-            icon: Badge(label: Text('2'), child: Icon(Icons.messenger_sharp)),
-            label: 'Messages',
-          ),
+          navigation_distination(icon: Icons.search, text: 'Search'),
+          navigation_distination(icon: Icons.shopping_cart, text: 'Cart'),
+          navigation_distination(icon: Icons.sell_sharp, text: 'Selling'),
         ],
       ),
     );
@@ -79,14 +88,16 @@ class customButton extends StatelessWidget {
   }
 }
 
-class navigation_destination_select extends StatelessWidget {
+class navigationHome extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
+  final String text;
 
-  const navigation_destination_select({
+  const navigationHome({
     super.key,
     required this.icon,
     required this.selectedIcon,
+    required this.text,
   });
 
   @override
@@ -94,7 +105,7 @@ class navigation_destination_select extends StatelessWidget {
     return NavigationDestination(
       selectedIcon: Icon(selectedIcon),
       icon: Icon(icon),
-      label: 'Home',
+      label: text,
     );
   }
 }
@@ -114,5 +125,6 @@ class navigation_distination extends StatelessWidget {
     return NavigationDestination(icon: Icon(icon), label: (text));
   }
 }
+//messenger_sharp
 
 void setState(Null Function() param0) {}
