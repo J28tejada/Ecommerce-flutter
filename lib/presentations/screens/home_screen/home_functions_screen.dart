@@ -1,3 +1,4 @@
+import 'package:ecommerce/presentations/screens/home_screen/add_product.dart';
 import 'package:flutter/material.dart';
 
 class HomeFunctionsScreen extends StatefulWidget {
@@ -46,13 +47,18 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
         ),
       ),
 
-      floatingActionButton: customButton(icon: Icons.add),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            //indicar accion
-          });
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProduct()),
+          );
         },
+        child: Icon(Icons.add_circle),
+      ),
+
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {},
         indicatorColor: Theme.of(context).colorScheme.inversePrimary,
         //selectedIndex: currentPageIndex,
         destinations: const <Widget>[
@@ -67,23 +73,6 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
           navigation_distination(icon: Icons.sell_sharp, text: 'Selling'),
         ],
       ),
-    );
-  }
-}
-
-class customButton extends StatelessWidget {
-  final IconData icon;
-
-  const customButton({super.key, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        null;
-      },
-      tooltip: 'Increment',
-      child: Icon(icon),
     );
   }
 }
