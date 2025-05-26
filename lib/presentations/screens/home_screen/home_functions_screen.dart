@@ -1,4 +1,11 @@
+import 'package:ecommerce/presentations/screens/NavigationBar/account_screen.dart';
+import 'package:ecommerce/presentations/screens/NavigationBar/cart_functions.dart';
+import 'package:ecommerce/presentations/screens/NavigationBar/home_screen.dart';
+import 'package:ecommerce/presentations/screens/NavigationBar/search_function.dart';
+import 'package:ecommerce/presentations/screens/NavigationBar/selling_functions.dart';
 import 'package:ecommerce/presentations/screens/home_screen/add_product.dart';
+import 'package:ecommerce/presentations/screens/home_screen/topMenu/message_functions.dart';
+import 'package:ecommerce/presentations/screens/home_screen/topMenu/notifications_settings.dart';
 import 'package:flutter/material.dart';
 
 class HomeFunctionsScreen extends StatefulWidget {
@@ -9,6 +16,16 @@ class HomeFunctionsScreen extends StatefulWidget {
 }
 
 class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
+  List<Widget> pages = [
+    HomeScreen(),
+    AccountScreen(),
+    SearchFunction(),
+    CartFunctions(),
+    SellingFunctions(),
+  ];
+
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,104 +33,82 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("My Ecommerce"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_on)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.message)),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NotificationsSettings(),
+                ),
+              );
+            },
+            icon: Icon(Icons.notifications_on),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MessageFunctions()),
+              );
+            },
+            icon: Icon(Icons.message),
+          ),
         ],
       ),
-      body: GridView(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        padding: EdgeInsets.all(2),
-        children: List.generate(
-          16,
-          (index) => const Padding(
-            padding: EdgeInsets.all(15),
-            child: Card(
-              color: Colors.blue,
-              elevation: 7,
-              child: Center(
-                child: Text(
-                  'Product images',
-                  style: TextStyle(
-                    fontFamily: 'Arial rounded MT Bold',
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: floatingActionButton(
+        icon: Icons.add,
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddProduct()),
           );
         },
-        child: Icon(Icons.add_circle),
       ),
 
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {},
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPage = index;
+          });
+        },
         indicatorColor: Theme.of(context).colorScheme.inversePrimary,
+        selectedIndex: currentPage,
         //selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          navigationHome(
-            icon: Icons.home,
-            selectedIcon: Icons.home,
-            text: 'Home',
+          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(
+            icon: Badge(label: Text('2'), child: Icon(Icons.account_balance)),
+            label: 'Account',
           ),
-          navigation_distination(icon: Icons.account_box, text: 'Account'),
-          navigation_distination(icon: Icons.search, text: 'Search'),
-          navigation_distination(icon: Icons.shopping_cart, text: 'Cart'),
-          navigation_distination(icon: Icons.sell_sharp, text: 'Selling'),
+          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
+          NavigationDestination(
+            icon: Badge(label: Text('2'), child: Icon(Icons.shopping_cart)),
+            label: 'Cart',
+          ),
+          NavigationDestination(icon: Icon(Icons.sell), label: 'Selling'),
         ],
       ),
+      body:
+          <Widget>[
+            HomeScreen(),
+            AccountScreen(),
+            SearchFunction(),
+            CartFunctions(),
+            SellingFunctions(),
+          ][currentPage],
     );
   }
 }
 
-class navigationHome extends StatelessWidget {
+class floatingActionButton extends StatelessWidget {
   final IconData icon;
-  final IconData selectedIcon;
-  final String text;
+  final VoidCallback? onPressed;
 
-  const navigationHome({
-    super.key,
-    required this.icon,
-    required this.selectedIcon,
-    required this.text,
-  });
+  const floatingActionButton({super.key, required this.icon, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return NavigationDestination(
-      selectedIcon: Icon(selectedIcon),
-      icon: Icon(icon),
-      label: text,
-    );
+    return FloatingActionButton(onPressed: onPressed, child: Icon(icon));
   }
 }
-
-class navigation_distination extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const navigation_distination({
-    super.key,
-    required this.icon,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return NavigationDestination(icon: Icon(icon), label: (text));
-  }
-}
-//messenger_sharp
-
-void setState(Null Function() param0) {}
