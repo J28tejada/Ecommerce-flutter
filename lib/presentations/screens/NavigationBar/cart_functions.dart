@@ -9,7 +9,7 @@ class CartFunctions extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Add Products')],
+          children: [Text("Don't have products in your cart")],
         ),
       ),
     );

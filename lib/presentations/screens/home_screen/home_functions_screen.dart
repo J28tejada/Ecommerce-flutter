@@ -42,7 +42,7 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
                 ),
               );
             },
-            icon: Icon(Icons.notifications_on),
+            icon: Icon(Icons.notifications),
           ),
           IconButton(
             onPressed: () {
@@ -78,7 +78,7 @@ class _HomeFunctionsScreenState extends State<HomeFunctionsScreen> {
         destinations: const <Widget>[
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
           NavigationDestination(
-            icon: Badge(label: Text('2'), child: Icon(Icons.account_balance)),
+            icon: Icon(Icons.account_circle),
             label: 'Account',
           ),
           NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
