@@ -38,20 +38,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      body: _HomeView(),
+      body: _HomeView(isGridMode: _isGridMode),
     );
   }
 }
 
 class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+  final bool isGridMode;
+  const _HomeView({required this.isGridMode});
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends ConsumerState<_HomeView> {
-  bool _isGridMode = true;
   @override
   void initState() {
     super.initState();
@@ -59,10 +59,11 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     ref.read(availableProductsProvider.notifier).loadProducts();
   }
 
+  @override
   Widget build(BuildContext context) {
     final products = ref.watch(availableProductsProvider);
 
-    return _isGridMode
+    return widget.isGridMode
         ? GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -74,17 +75,46 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Card(
-                color: Colors.blue,
+                color: const Color.fromARGB(255, 76, 135, 164),
                 elevation: 7,
-                child: Center(
-                  child: Text(
-                    productList.title,
-                    style: const TextStyle(
-                      fontFamily: 'Arial rounded MT Bold',
-                      fontSize: 20,
-                      color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Image.network(
+                        productList.images.isNotEmpty
+                            ? productList.images.first
+                            : 'https://ih1.redbubble.net/image.4905811472.8675/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg', // Fallback image
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 1,
+                      ),
+                      child: Text(
+                        productList.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        '\$${productList.price}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -98,84 +128,52 @@ class _HomeViewState extends ConsumerState<_HomeView> {
             return Padding(
               padding: const EdgeInsets.all(15),
               child: Card(
-                color: Colors.blue,
+                color: const Color.fromARGB(255, 76, 135, 164),
                 elevation: 7,
-                child: Center(
-                  child: Text(
-                    productList.title,
-                    style: const TextStyle(
-                      fontFamily: 'Arial rounded MT Bold',
-                      fontSize: 20,
-                      color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(
+                        productList.images.isNotEmpty
+                            ? productList.images.first
+                            : 'https://ih1.redbubble.net/image.4905811472.8675/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg',
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 1,
+                      ),
+                      child: Text(
+                        productList.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        '\$${productList.price}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
             );
           },
         );
   }
-
-  /*
-  // If you want to use ListView instead of GridView  
-    ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final productList = products[index];
-        return ListTile(title: Text(productList.title));
-      },
-    );
-  }
-
-body:
-          _isGridMode
-                padding: EdgeInsets.all(2),
-                children: List.generate(
-                  16,
-                  (index) => const Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Card(
-                      color: Colors.blue,
-                      elevation: 7,
-                      child: Center(
-                        child: Text(
-                          'Product images',
-                          style: TextStyle(
-                            fontFamily: 'Arial rounded MT Bold',
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-              : GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                padding: EdgeInsets.all(2),
-                children: List.generate(
-                  16,
-                  (index) => const Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Card(
-                      color: Colors.blue,
-                      elevation: 7,
-                      child: Center(
-                        child: Text(
-                          'Product images',
-                          style: TextStyle(
-                            fontFamily: 'Arial rounded MT Bold',
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-                            */
 }

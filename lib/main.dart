@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
           return HomeFunctionsScreen();
         },
       },
-      //home: HomeFunctionsScreen(),
     );
   }
 }
